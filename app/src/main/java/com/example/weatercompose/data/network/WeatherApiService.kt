@@ -1,5 +1,6 @@
-package com.example.weatercompose.data
+package com.example.weatercompose.data.network
 
+import com.example.weatercompose.data.model.WeatherResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -8,7 +9,7 @@ interface  WeatherApiService {
     suspend fun getCurrentWeather(
         @Query("key") apiKey: String,
         @Query("q") city: String,
-    ):WeatherResponse
+    ): WeatherResponse
 
 
     @GET("forecast.json")
