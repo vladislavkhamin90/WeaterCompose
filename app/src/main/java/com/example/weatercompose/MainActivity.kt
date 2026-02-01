@@ -1,54 +1,41 @@
 package com.example.weatercompose
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.example.weatercompose.data.Model
-import com.example.weatercompose.data.RetrofitInstance
-import com.example.weatercompose.screens.MainCard
-import com.example.weatercompose.screens.TabLayout
+import com.example.weatercompose.ui.CityInputDialog
+import com.example.weatercompose.ui.WeatherViewModel
+import com.example.weatercompose.ui.MainCard
+import com.example.weatercompose.ui.TabLayout
+import com.example.weatercompose.di.ViewModelFactory
 
 const val API_KEY = "7e1df1c53f17499a825163433252511"
 
 class MainActivity : ComponentActivity() {
+
     @OptIn(ExperimentalGlideComposeApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val city = "Volgograd"
-            var mainCardModel by remember { mutableStateOf<Model?>(null) }
-            var hourlyModels by remember { mutableStateOf<List<Model>?>(null) }
-            var dailyModels by remember { mutableStateOf<List<Model>?>(null) }
 
-            LaunchedEffect(Unit) {
-                try {
-                    val response = RetrofitInstance.api.getForecast(API_KEY, city, 5)
-                    mainCardModel = response.toMainCardModel()
-                    val forecastDay = response.forecast?.forecastday?.get(0)
-                    hourlyModels = forecastDay?.hour?.toHourlyModels(city)
-                    dailyModels = response.forecast?.forecastday?.toDailyModels(city)
+            val viewModel: WeatherViewModel = viewModel(
+                factory = ViewModelFactory()
+            )
 
-                } catch (e: Exception) {
-                    Log.d("MainActivity", e.toString())
-                    e.printStackTrace()
-                }
-            }
+            val state by viewModel.uiState.collectAsState()
 
             Image(
                 painter = painterResource(R.drawable.bg),
@@ -59,11 +46,31 @@ class MainActivity : ComponentActivity() {
                 contentScale = ContentScale.Crop
             )
 
+            if (state.isCityDialogVisible) {
+                CityInputDialog(
+                    currentCity = state.city,
+                    onConfirm = { viewModel.submitCity(it) },
+                    onDismiss = { viewModel.closeCityDialog() }
+                )
+            }
+
             Column {
-                MainCard(mainCardModel)
-                TabLayout(hourlyModels, dailyModels)
+                MainCard(
+                    model = state.mainCard,
+                    onRefresh = { viewModel.refresh() },
+                    onCityClick = {
+                        viewModel.openCityDialog()
+                    }
+                )
+
+                TabLayout(
+                    hour = state.hourly,
+                    days = state.daily
+                )
+
                 Spacer(modifier = Modifier.weight(1f))
             }
         }
     }
 }
+

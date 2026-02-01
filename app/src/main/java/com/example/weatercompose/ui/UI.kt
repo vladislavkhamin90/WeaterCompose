@@ -1,4 +1,4 @@
-package com.example.weatercompose.screens
+package com.example.weatercompose.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.example.weatercompose.data.Model
+import com.example.weatercompose.data.model.Model
 import com.example.weatercompose.ui.theme.CardBg50
 
 

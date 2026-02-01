@@ -1,9 +1,9 @@
-package com.example.weatercompose
+package com.example.weatercompose.data
 
-import com.example.weatercompose.data.ForecastDay
-import com.example.weatercompose.data.HourForecast
-import com.example.weatercompose.data.Model
-import com.example.weatercompose.data.WeatherResponse
+import com.example.weatercompose.data.model.ForecastDay
+import com.example.weatercompose.data.model.HourForecast
+import com.example.weatercompose.data.model.Model
+import com.example.weatercompose.data.model.WeatherResponse
 
 fun WeatherResponse.toMainCardModel(): Model {
     return Model(

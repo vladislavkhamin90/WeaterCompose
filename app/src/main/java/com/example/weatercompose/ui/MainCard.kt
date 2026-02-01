@@ -1,4 +1,4 @@
-package com.example.weatercompose.screens
+package com.example.weatercompose.ui
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -39,13 +39,17 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.weatercompose.R
-import com.example.weatercompose.data.Model
+import com.example.weatercompose.data.model.Model
 import com.example.weatercompose.ui.theme.CardBg50
 import kotlinx.coroutines.launch
 
 @ExperimentalGlideComposeApi
 @Composable
-fun MainCard(model: Model?) {
+fun MainCard(
+    model: Model?,
+    onRefresh: () -> Unit,
+    onCityClick: () -> Unit
+) {
 
     Column(
         modifier = Modifier
@@ -125,9 +129,7 @@ fun MainCard(model: Model?) {
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            IconButton(onClick = {
-
-                            }) {
+                            IconButton(onClick = onCityClick) {
                                 Icon(
                                     painter = painterResource(R.drawable.search),
                                     contentDescription = "img",
@@ -144,9 +146,7 @@ fun MainCard(model: Model?) {
                                 color = Color.Black
                             )
 
-                            IconButton(onClick = {
-
-                            }) {
+                            IconButton(onClick = onRefresh) {
                                 Icon(
                                     painter = painterResource(R.drawable.reload),
                                     contentDescription = "img",
@@ -208,7 +208,6 @@ fun TabLayout(hour: List<Model>?, days: List<Model>?) {
                     LazyColumn(
                     ) {
                         itemsIndexed(hour ?: emptyList()) { index, item ->
-                            Log.d("TabLayout", "Hour item $index: ${item.lastTime}")
                             ListItem(item)
                         }
                     }
@@ -218,7 +217,6 @@ fun TabLayout(hour: List<Model>?, days: List<Model>?) {
                     LazyColumn(
                     ) {
                         itemsIndexed(days ?: emptyList()) { index, item ->
-                            Log.d("TabLayout", "Day item $index: ${item.lastTime}")
                             ListItem(item)
                         }
                     }

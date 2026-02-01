@@ -1,4 +1,4 @@
-package com.example.weatercompose.data
+package com.example.weatercompose.data.model
 
 import com.google.gson.annotations.SerializedName
 

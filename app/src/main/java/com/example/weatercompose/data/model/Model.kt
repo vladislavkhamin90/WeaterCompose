@@ -1,4 +1,4 @@
-package com.example.weatercompose.data
+package com.example.weatercompose.data.model
 
 
 data class Model(
