@@ -34,3 +34,5 @@ Android приложение погоды, построенное на Jetpack C
     Функции расширения для преобразования моделей
 
     Внедрение зависимостей с ViewModelFactory
+<img width="430" height="900" alt="изображение" src="https://github.com/user-attachments/assets/967df342-296e-4654-8894-01ac1686cbe1" />
+<img width="430" height="900" alt="изображение" src="https://github.com/user-attachments/assets/334d2e9b-0d27-4e53-b2df-ec19478a2587" />
